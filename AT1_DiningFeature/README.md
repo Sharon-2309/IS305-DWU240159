@@ -2,7 +2,7 @@
 
 **Student name:** _SharonPETER_
 **Student ID:** _240159_
-**GitHub repository URL:** _paste your repo URL here, e.g. https://github.com/your-username/IS305-YourStudentID_
+**GitHub repository URL:** _https://github.com/Sharon-2309/IS305-DWU240159_
 
 ## Description
 
