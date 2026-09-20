@@ -1,0 +1,14 @@
+{
+  "name": "at3-campus-service-request-system",
+  "version": "1.0.0",
+  "description": "IS305 AT3 Major Project - Campus Service Request Management System",
+  "main": "src/CampusServiceApp.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/CampusServiceApp.js",
+    "test": "node --test tests/"
+  },
+  "author": "[Your Full Name] - [Your Student ID]",
+  "license": "UNLICENSED",
+  "private": true
+}
