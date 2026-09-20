@@ -4,7 +4,7 @@
  * Represents a single campus service request at Pass level.
  *
  * Specialised subclasses (ICTSupportRequest, MaintenanceRequest,
- * CleaningRequest) extend this class from Week 11 (Credit), overriding
+ * CleaningRequest) extend this class from week 11 (Credit), overriding
  * getRequestSummary() and adding calculatePriorityScore() /
  * getTargetResolutionHours() at Distinction (Week 13).
  */
@@ -20,7 +20,7 @@ class ServiceRequest {
   #assignedTechnicianId;
   #dateSubmitted;
   #dateUpdated;
-  #history;
+  #history; 
 
   static VALID_CATEGORIES = [
     'ICT Support',

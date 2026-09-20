@@ -3,7 +3,7 @@
 /**
  * Represents a user of the Campus Service Request Management System.
  *
- * At Pass level this single class covers all four roles (Student/Staff
+ * At Pass Level this single class covers all four roles (Student/Staff
  * Requester, Service Officer, Technician, Administrator) via the userType
  * field. Role-specific subclasses (StudentRequester, StaffRequester,
  * ServiceOfficer, Technician) are introduced through inheritance at the
