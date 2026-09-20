@@ -41,7 +41,6 @@ class ServiceRequestManager {
   getAllUsers() {
     return [...this.#users];
   }
-
   // ---------- Request management ----------
 
   submitRequest(request) {
