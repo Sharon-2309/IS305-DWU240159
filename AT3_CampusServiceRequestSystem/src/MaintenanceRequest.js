@@ -56,7 +56,7 @@ class MaintenanceRequest extends ServiceRequest {
 
   getRequestSummary() {
     return (
-      `${super.getRequestSummary()} | Building: ${this.#building}, Room: ${this.#roomNumber} ` +
+      `${this.getCommonSummaryLine()} | Building: ${this.#building}, Room: ${this.#roomNumber} ` +
       `- Hazard: ${this.#hazardLevel} - Equipment: ${this.#equipmentAffected}`
     );
   }
@@ -71,6 +71,15 @@ class MaintenanceRequest extends ServiceRequest {
     if (this.#hazardLevel === 'High') return 8;
     const byPriority = { Urgent: 8, High: 24, Normal: 72, Low: 120 };
     return byPriority[this.getPriority()];
+  }
+
+  getSpecialisedFields() {
+    return {
+      building: this.#building,
+      roomNumber: this.#roomNumber,
+      hazardLevel: this.#hazardLevel,
+      equipmentAffected: this.#equipmentAffected,
+    };
   }
 }
 

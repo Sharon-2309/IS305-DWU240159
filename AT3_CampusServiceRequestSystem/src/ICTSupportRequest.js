@@ -56,7 +56,7 @@ class ICTSupportRequest extends ServiceRequest {
 
   getRequestSummary() {
     return (
-      `${super.getRequestSummary()} | Device: ${this.#deviceType} (${this.#systemName}) ` +
+      `${this.getCommonSummaryLine()} | Device: ${this.#deviceType} (${this.#systemName}) ` +
       `- Fault: ${this.#faultType} - Network impact: ${this.#networkImpact}`
     );
   }
@@ -71,6 +71,15 @@ class ICTSupportRequest extends ServiceRequest {
     if (this.#networkImpact === 'Full Outage') return 4;
     const byPriority = { Urgent: 4, High: 12, Normal: 48, Low: 96 };
     return byPriority[this.getPriority()];
+  }
+
+  getSpecialisedFields() {
+    return {
+      deviceType: this.#deviceType,
+      systemName: this.#systemName,
+      faultType: this.#faultType,
+      networkImpact: this.#networkImpact,
+    };
   }
 }
 

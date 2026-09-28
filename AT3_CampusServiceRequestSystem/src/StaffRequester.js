@@ -35,6 +35,10 @@ class StaffRequester extends User {
   displayInfo() {
     return `${super.displayInfo()}\nDepartment: ${this.#department}`;
   }
+
+  getSpecialisedFields() {
+    return { department: this.#department };
+  }
 }
 
 module.exports = StaffRequester;

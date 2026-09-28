@@ -359,12 +359,105 @@ class ServiceRequest {
     return this.#transitionTo('Closed', actorId, 'Request verified and closed', comment);
   }
 
+  // ---------- Abstract-style methods (Distinction) ----------
+  //
+  // Every concrete request type (ICTSupportRequest, MaintenanceRequest,
+  // CleaningRequest, GeneralServiceRequest) MUST override these three
+  // methods. ServiceRequest itself is never instantiated directly by the
+  // application from Week 13 onward — CampusServiceApp always builds one
+  // of the four concrete subclasses. These base implementations throw a
+  // clear error so a subclass that forgets to override fails loudly
+  // instead of silently returning wrong/generic data.
+
   getRequestSummary() {
+    throw new Error(
+      `getRequestSummary() is not implemented for request type "${this.constructor.name}". ` +
+      `Every ServiceRequest subclass must override this method.`
+    );
+  }
+
+  calculatePriorityScore() {
+    throw new Error(
+      `calculatePriorityScore() is not implemented for request type "${this.constructor.name}". ` +
+      `Every ServiceRequest subclass must override this method.`
+    );
+  }
+
+  getTargetResolutionHours() {
+    throw new Error(
+      `getTargetResolutionHours() is not implemented for request type "${this.constructor.name}". ` +
+      `Every ServiceRequest subclass must override this method.`
+    );
+  }
+
+  /**
+   * Shared summary line built from only the fields ServiceRequest itself
+   * owns. Concrete subclasses call this (via `this.getCommonSummaryLine()`)
+   * from their own getRequestSummary() override and append their
+   * specialised fields — this is what getRequestSummary() itself used to
+   * do before it became an abstract-style method above.
+   */
+  getCommonSummaryLine() {
     return (
       `[${this.#requestId}] ${this.#title} (${this.#category}, ${this.#priority}) ` +
       `- Status: ${this.#status} - Requested by: ${this.#requester.getFullName()} ` +
       `- Location: ${this.#location}`
     );
+  }
+
+  // ---------- JSON persistence support (Distinction) ----------
+
+  /**
+   * Returns the fields specific to a concrete subclass, for saving to
+   * JSON. Default is empty — every specialised subclass overrides this.
+   * Not one of the three "must override" abstract-style methods (a
+   * request type with no extra fields is a legitimate, if unlikely, case),
+   * so this has a safe default rather than throwing.
+   */
+  getSpecialisedFields() {
+    return {};
+  }
+
+  /**
+   * Plain-object representation suitable for JSON.stringify(), used by
+   * ServiceRequestFileRepository. Includes requestType so
+   * ServiceRequestFactory knows which subclass to reconstruct.
+   */
+  toData() {
+    return {
+      requestId: this.#requestId,
+      requestType: this.constructor.name,
+      requesterId: this.#requester.getUserId(),
+      title: this.#title,
+      description: this.#description,
+      location: this.#location,
+      category: this.#category,
+      priority: this.#priority,
+      status: this.#status,
+      assignedTechnicianId: this.#assignedTechnicianId,
+      dateSubmitted: this.#dateSubmitted,
+      dateUpdated: this.#dateUpdated,
+      history: this.#history,
+      specialisedFields: this.getSpecialisedFields(),
+    };
+  }
+
+  /**
+   * Restore-only: overwrites status/assignment/dates/history directly,
+   * bypassing normal transition rules. Used ONLY by ServiceRequestFactory
+   * immediately after constructing a fresh instance while reloading from
+   * JSON — a saved "Closed" request must come back as Closed, not go
+   * through the full Submitted -> ... -> Closed transition sequence again.
+   * Never call this outside the restoration path.
+   */
+  _restoreState({ status, assignedTechnicianId, dateSubmitted, dateUpdated, history }) {
+    if (status) this.#status = status;
+    this.#assignedTechnicianId = assignedTechnicianId ?? null;
+    if (dateSubmitted) this.#dateSubmitted = new Date(dateSubmitted);
+    if (dateUpdated) this.#dateUpdated = new Date(dateUpdated);
+    if (Array.isArray(history)) {
+      this.#history = history.map((h) => ({ ...h, dateTime: new Date(h.dateTime) }));
+    }
   }
 }
 

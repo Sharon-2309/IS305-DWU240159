@@ -3,7 +3,7 @@
 /**
  * Represents a user of the Campus Service Request Management System.
  *
- * At Pass Level this single class covers all four roles (Student/Staff
+ * At Pass level this single class covers all four roles (Student/Staff
  * Requester, Service Officer, Technician, Administrator) via the userType
  * field. Role-specific subclasses (StudentRequester, StaffRequester,
  * ServiceOfficer, Technician) are introduced through inheritance at the
@@ -121,6 +121,28 @@ class User {
       `Email: ${this.#email}\n` +
       `Type: ${this.#userType}`
     );
+  }
+
+  // ---------- JSON persistence support (Distinction) ----------
+
+  /**
+   * Returns fields specific to a concrete User subclass, for saving to
+   * JSON. Default is empty — role subclasses override this.
+   */
+  getSpecialisedFields() {
+    return {};
+  }
+
+  /** Plain-object representation suitable for JSON.stringify(). */
+  toData() {
+    return {
+      userId: this.#userId,
+      userType: this.#userType,
+      firstName: this.#firstName,
+      lastName: this.#lastName,
+      email: this.#email,
+      specialisedFields: this.getSpecialisedFields(),
+    };
   }
 
   /**

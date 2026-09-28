@@ -6,9 +6,9 @@
   "type": "commonjs",
   "scripts": {
     "start": "node src/CampusServiceApp.js",
-    "test": "node --test tests/"
+    "test": "node --test"
   },
-  "author": "[Your Full Name] - [Your Student ID]",
+  "author": "[SharonPETER] - [240159]",
   "license": "UNLICENSED",
   "private": true
 }

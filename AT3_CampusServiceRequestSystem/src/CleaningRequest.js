@@ -56,7 +56,7 @@ class CleaningRequest extends ServiceRequest {
 
   getRequestSummary() {
     return (
-      `${super.getRequestSummary()} | Area: ${this.#cleaningArea} - Hygiene risk: ${this.#hygieneRisk} ` +
+      `${this.getCommonSummaryLine()} | Area: ${this.#cleaningArea} - Hygiene risk: ${this.#hygieneRisk} ` +
       `- Type: ${this.#serviceType} - Preferred time: ${this.#preferredServiceTime}`
     );
   }
@@ -71,6 +71,15 @@ class CleaningRequest extends ServiceRequest {
     if (this.#hygieneRisk === 'High') return 6;
     const byPriority = { Urgent: 6, High: 24, Normal: 48, Low: 96 };
     return byPriority[this.getPriority()];
+  }
+
+  getSpecialisedFields() {
+    return {
+      cleaningArea: this.#cleaningArea,
+      hygieneRisk: this.#hygieneRisk,
+      serviceType: this.#serviceType,
+      preferredServiceTime: this.#preferredServiceTime,
+    };
   }
 }
 

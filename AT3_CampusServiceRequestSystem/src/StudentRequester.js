@@ -51,6 +51,10 @@ class StudentRequester extends User {
   displayInfo() {
     return `${super.displayInfo()}\nProgramme: ${this.#programme}\nYear Level: ${this.#yearLevel}`;
   }
+
+  getSpecialisedFields() {
+    return { programme: this.#programme, yearLevel: this.#yearLevel };
+  }
 }
 
 module.exports = StudentRequester;

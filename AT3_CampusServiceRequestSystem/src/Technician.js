@@ -35,6 +35,10 @@ class Technician extends User {
   displayInfo() {
     return `${super.displayInfo()}\nTechnical Speciality: ${this.#technicalSpeciality}`;
   }
+
+  getSpecialisedFields() {
+    return { technicalSpeciality: this.#technicalSpeciality };
+  }
 }
 
 module.exports = Technician;

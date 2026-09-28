@@ -35,6 +35,10 @@ class ServiceOfficer extends User {
   displayInfo() {
     return `${super.displayInfo()}\nService Section: ${this.#serviceSection}`;
   }
+
+  getSpecialisedFields() {
+    return { serviceSection: this.#serviceSection };
+  }
 }
 
 module.exports = ServiceOfficer;
